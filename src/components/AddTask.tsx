@@ -29,7 +29,7 @@ export default function AddTask() {
       <div className="w-full flex flex-col gap-1">
         <span className="text-white text-sm font-semibold">Titulo</span>
         <input
-          className="p-2 bg-gray-500 text-gray-100 text-sm w-full rounded-md outline-none"
+          className="p-2 bg-gray-500 text-gray-100 text-sm w-full rounded outline-none"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -38,7 +38,7 @@ export default function AddTask() {
       <div className="w-full flex flex-col gap-1">
         <span className="text-white text-sm font-semibold">Descripcion</span>
         <input
-          className="p-2 bg-gray-500 text-gray-100 text-sm w-full rounded-md outline-none"
+          className="p-2 bg-gray-500 text-gray-100 text-sm w-full rounded outline-none"
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
