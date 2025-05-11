@@ -25,9 +25,15 @@ export default function AddTask() {
   };
 
   return (
-    <div className="bg-gray-700 w-full flex-col max-w-84 gap-2 flex items-center justify-between p-4 rounded-lg">
+    <form
+      className="bg-gray-700 w-full flex-col max-w-84 gap-2 flex items-center justify-between p-4 rounded-lg"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleAddTask();
+      }}
+    >
       <div className="w-full flex flex-col gap-1">
-        <span className="text-white text-sm font-semibold">Titulo</span>
+        <span className="text-white text-sm font-semibold">Título</span>
         <input
           className="p-2 bg-gray-500 text-gray-100 text-sm w-full rounded outline-none"
           type="text"
@@ -36,7 +42,7 @@ export default function AddTask() {
         />
       </div>
       <div className="w-full flex flex-col gap-1">
-        <span className="text-white text-sm font-semibold">Descripcion</span>
+        <span className="text-white text-sm font-semibold">Descripción</span>
         <input
           className="p-2 bg-gray-500 text-gray-100 text-sm w-full rounded outline-none"
           type="text"
@@ -47,10 +53,10 @@ export default function AddTask() {
       <button
         className="p-2 w-full bg-blue-500 text-white text-sm cursor-pointer active:scale-97 disabled:opacity-50 transition-all duration-100 rounded"
         disabled={!title.trim()}
-        onClick={handleAddTask}
+        type="submit"
       >
         Agregar
       </button>
-    </div>
+    </form>
   );
 }

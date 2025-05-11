@@ -12,7 +12,9 @@ export default function App() {
       <AddTask />
 
       <Column name="Activas">
-        {taskList.length === 0 && <span className='text-center'>No hay tareas</span>}
+        {taskList.length === 0 && (
+          <span className="text-center">No hay tareas</span>
+        )}
         {taskList.map((task) => (
           <Task id={task.id} name={task.name} description={task.description} />
         ))}
