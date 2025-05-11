@@ -16,7 +16,7 @@ export default function App() {
           <span className="text-center">No hay tareas</span>
         )}
         {taskList.map((task) => (
-          <Task id={task.id} name={task.name} description={task.description} />
+          <Task task={task} />
         ))}
       </Column>
     </div>

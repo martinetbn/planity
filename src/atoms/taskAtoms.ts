@@ -1,9 +1,4 @@
 import { atomWithStorage } from 'jotai/utils';
+import type { Task } from '../types/task.types';
 
-interface Task {
-  id: number;
-  name: string;
-  description: string;
-}
-
-export const taskListAtom = atomWithStorage<Task[]>("taskList", []);
+export const taskListAtom = atomWithStorage<Task[]>('taskList', []);

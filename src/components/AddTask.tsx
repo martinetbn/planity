@@ -18,6 +18,7 @@ export default function AddTask() {
         id: newId,
         name: title,
         description: description,
+        isDone: false,
       },
     ]);
     setTitle('');
