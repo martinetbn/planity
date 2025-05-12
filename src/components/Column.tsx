@@ -1,4 +1,6 @@
 import { Children } from 'react';
+import { useAtom } from 'jotai';
+import { taskListAtom } from '../atoms/taskAtoms';
 
 interface ColumnProps {
   name: string;
@@ -6,6 +8,11 @@ interface ColumnProps {
 }
 
 export default function Column({ name, children }: ColumnProps) {
+  const [taskList] = useAtom(taskListAtom);
+
+  const completedTasks = taskList.filter((task) => task.isDone).length;
+  const pendingTasks = taskList.length - completedTasks;
+
   return (
     <div className="flex flex-col w-full max-w-84 items-center shadow-xl justify-center gap-4 p-4 text-gray-100 bg-gray-700 rounded-lg">
       <span className="font-semibold text-lg">
@@ -13,6 +20,31 @@ export default function Column({ name, children }: ColumnProps) {
       </span>
       <div className="w-full flex flex-col gap-2 overflow-y-scroll max-h-72">
         {children}
+      </div>
+      <div className='w-full flex flex-col gap-1'>
+        <div className="flex w-full justify-between">
+          <div>
+            <span>Completadas: </span>
+            <span className="font-semibold">{completedTasks}</span>
+          </div>
+          <div>
+            <span>Pendientes: </span>
+            <span className="font-semibold">{pendingTasks}</span>
+          </div>
+        </div>
+        <div className="w-full flex items-center gap-2">
+          <span className="font-semibold">{`${Math.round(
+            (completedTasks / taskList.length) * 100,
+          )}%`}</span>
+          <div className="bg-gray-500 w-full h-1 rounded-lg relative">
+            <div
+              className="bg-blue-500 h-full rounded-lg"
+              style={{
+                width: `${(completedTasks / taskList.length) * 100}%`,
+              }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
