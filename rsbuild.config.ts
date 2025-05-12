@@ -6,4 +6,7 @@ export default defineConfig({
   html: {
     title: 'Planity',
   },
+  output: {
+    assetPrefix: '/planity/',
+  }
 });
