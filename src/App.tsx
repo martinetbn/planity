@@ -8,15 +8,14 @@ export default function App() {
   const [taskList] = useAtom(taskListAtom);
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center gap-4 bg-gray-50">
+    <div className="w-full h-screen flex flex-col md:flex-row items-center justify-center gap-4 bg-gray-50">
       <AddTask />
-
       <Column name="Activas">
         {taskList.length === 0 && (
           <span className="text-center">No hay tareas</span>
         )}
-        {taskList.map((task) => (
-          <Task task={task} />
+        {taskList.map((task, index) => (
+          <Task key={index} task={task} />
         ))}
       </Column>
     </div>
