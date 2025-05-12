@@ -21,7 +21,7 @@ export default function Column({ name, children }: ColumnProps) {
       <div className="w-full flex flex-col gap-2 overflow-y-scroll max-h-72">
         {children}
       </div>
-      <div className='w-full flex flex-col gap-1'>
+      <div className="w-full flex flex-col gap-1">
         <div className="flex w-full justify-between">
           <div>
             <span>Completadas: </span>
@@ -32,19 +32,21 @@ export default function Column({ name, children }: ColumnProps) {
             <span className="font-semibold">{pendingTasks}</span>
           </div>
         </div>
-        <div className="w-full flex items-center gap-2">
-          <span className="font-semibold">{`${Math.round(
-            (completedTasks / taskList.length) * 100,
-          )}%`}</span>
-          <div className="bg-gray-500 w-full h-1 rounded-lg relative">
-            <div
-              className="bg-blue-500 h-full rounded-lg"
-              style={{
-                width: `${(completedTasks / taskList.length) * 100}%`,
-              }}
-            />
+        {taskList.length !== 0 && (
+          <div className="w-full flex items-center gap-2">
+            <span className="font-semibold">{`${Math.round(
+              (completedTasks / taskList.length) * 100,
+            )}%`}</span>
+            <div className="bg-gray-500 w-full h-1 rounded-lg relative">
+              <div
+                className="bg-blue-500 h-full rounded-lg"
+                style={{
+                  width: `${(completedTasks / taskList.length) * 100}%`,
+                }}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
