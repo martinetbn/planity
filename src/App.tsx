@@ -3,6 +3,7 @@ import { taskListAtom } from './atoms/taskAtoms';
 import Column from './components/Column';
 import Task from './components/Task';
 import AddTask from './components/AddTask';
+import Modal from './components/Modal';
 
 export default function App() {
   const [taskList] = useAtom(taskListAtom);
@@ -18,6 +19,7 @@ export default function App() {
           <Task key={index} task={task} />
         ))}
       </Column>
+      <Modal />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { Children } from 'react';
 import { useAtom } from 'jotai';
 import { taskListAtom } from '../atoms/taskAtoms';
+import { currentModalAtom } from '../atoms/layoutAtoms';
 
 interface ColumnProps {
   name: string;
@@ -8,14 +9,11 @@ interface ColumnProps {
 }
 
 export default function Column({ name, children }: ColumnProps) {
-  const [taskList, setTaskList] = useAtom(taskListAtom);
+  const [taskList] = useAtom(taskListAtom);
+  const [, setCurrentModal] = useAtom(currentModalAtom);
 
   const completedTasks = taskList.filter((task) => task.isDone).length;
   const pendingTasks = taskList.length - completedTasks;
-
-  const handleDelete = () => {
-    setTaskList([]);
-  };
 
   return (
     <div className="flex flex-col w-full max-w-84 items-center shadow-xl justify-center gap-4 p-4 text-gray-100 bg-gray-700 rounded-lg">
@@ -23,7 +21,11 @@ export default function Column({ name, children }: ColumnProps) {
         <span className="font-semibold text-lg">
           {name} ({Children.count(children) - 1})
         </span>
-        <button className="cursor-pointer" onClick={handleDelete}>
+        <button
+          className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={taskList.length === 0}
+          onClick={() => setCurrentModal('DeleteAllConfirmation')}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="18"
