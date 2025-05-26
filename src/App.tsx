@@ -5,6 +5,7 @@ import Task from './components/Task';
 import SubTask from './components/SubTask';
 import AddTask from './components/AddTask';
 import Progress from './components/Progress';
+import Awards from './components/Awards';
 import Modal from './components/Modal';
 
 export default function App() {
@@ -14,7 +15,8 @@ export default function App() {
   const completedTasks = taskList.filter((task) => task.isDone);
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center px-4 bg-gray-50">
+    <div className="w-full h-screen flex flex-col items-center justify-center gap-1 px-2 bg-gray-50">
+      <Awards />
       <div className="w-full flex overflow-x-scroll items-center lg:justify-center justify-start gap-4">
         <AddTask />
         <Column name="Activas" taskCount={activeTasks.length}>
