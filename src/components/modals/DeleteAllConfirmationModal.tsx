@@ -12,7 +12,7 @@ export default function DeleteAllConfirmationModal() {
   };
 
   return (
-    <div className="bg-white flex flex-col gap-4 rounded-lg shadow-lg p-6 w-1/3 z-50">
+    <div className="bg-white flex flex-col gap-4 rounded-lg shadow-lg p-6 w-[calc(100%-16px)] sm:w-fit z-50">
       <div className="flex flex-col gap-1">
         <h2 className="text-xl font-semibold">Borrar todas las tareas</h2>
         <p>¿Esta seguro de que quiere borrar todas las tareas?</p>
