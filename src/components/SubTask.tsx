@@ -2,34 +2,44 @@ import { useState } from 'react';
 import { useAtom } from 'jotai';
 import { taskListAtom } from '../atoms/taskAtoms';
 import { Icon } from '@iconify/react';
-import type { Task, TaskCategory } from '../types/task.types';
+import type { Subtask, TaskCategory } from '../types/task.types';
 
-interface TaskProp {
-  task: Task;
+interface SubTaskProps {
+  subtask: Subtask;
 }
 
-export default function Task({ task }: TaskProp) {
+export default function SubTask({ subtask }: SubTaskProps) {
   const [, setTaskList] = useAtom(taskListAtom);
   const [isEditing, setIsEditing] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(task.name);
+  const [editedTitle, setEditedTitle] = useState(subtask.name);
   const [editedDescription, setEditedDescription] = useState(
-    task.description || '',
+    subtask.description || '',
   );
   const [editedCategory, setEditedCategory] = useState<TaskCategory>(
-    task.category,
+    subtask.category,
   );
-  const [editedDeadline, setEditedDeadline] = useState(task.deadline || '');
+  const [editedDeadline, setEditedDeadline] = useState(subtask.deadline || '');
 
   const handleDelete = () => {
-    setTaskList((prev) => prev.filter((_task) => _task.id !== task.id));
+    setTaskList((prev) =>
+      prev.map((_task) => {
+        _task.subTasks = _task.subTasks.filter(
+          (_subtaskItem) => _subtaskItem.id !== subtask.id,
+        );
+        return _task;
+      }),
+    );
   };
 
   const handleCheckbox = () => {
     setTaskList((prev) =>
       prev.map((_task) => {
-        if (_task.id === task.id) {
-          return { ..._task, isDone: !_task.isDone };
-        }
+        _task.subTasks = _task.subTasks.map((_subtaskItem) => {
+          if (_subtaskItem.id === subtask.id) {
+            return { ..._subtaskItem, isDone: !_subtaskItem.isDone };
+          }
+          return _subtaskItem;
+        });
         return _task;
       }),
     );
@@ -39,15 +49,18 @@ export default function Task({ task }: TaskProp) {
     if (isEditing) {
       setTaskList((prev) =>
         prev.map((_task) => {
-          if (_task.id === task.id) {
-            return {
-              ..._task,
-              name: editedTitle,
-              description: editedDescription,
-              category: editedCategory,
-              deadline: editedDeadline,
-            };
-          }
+          _task.subTasks = _task.subTasks.map((_subtask) => {
+            if (_subtask.id === subtask.id) {
+              return {
+                ..._subtask,
+                name: editedTitle,
+                description: editedDescription,
+                category: editedCategory,
+                deadline: editedDeadline,
+              };
+            }
+            return _subtask;
+          });
           return _task;
         }),
       );
@@ -58,20 +71,23 @@ export default function Task({ task }: TaskProp) {
   const handleImportant = () => {
     setTaskList((prev) =>
       prev.map((_task) => {
-        if (_task.id === task.id) {
-          return { ..._task, isImportant: !_task.isImportant };
-        }
+        _task.subTasks = _task.subTasks.map((_subtask) => {
+          if (_subtask.id === subtask.id) {
+            return { ..._subtask, isImportant: !_subtask.isImportant };
+          }
+          return _subtask;
+        });
         return _task;
       }),
     );
   };
 
-  const deadlinePassed = Date.parse(task.deadline || '') < Date.now();
+  const deadlinePassed = Date.parse(subtask.deadline || '') < Date.now();
 
   return (
     <div
       className={
-        'flex flex-col max-w-full items-start gap-2 justify-start text-gray-100 p-3 bg-gray-500 rounded-lg relative ' +
+        'flex flex-col max-w-full items-start gap-2 justify-start text-gray-100 p-3 bg-gray-500 rounded-lg relative' +
         (deadlinePassed ? ' bg-red-500' : '')
       }
     >
@@ -79,30 +95,30 @@ export default function Task({ task }: TaskProp) {
         {isEditing ? (
           <input
             type="text"
-            className="font-medium truncate overflow-hidden outline-none"
+            className="font-medium text-sm truncate overflow-hidden outline-none"
             value={editedTitle}
             placeholder="Título de la tarea"
             onChange={(e) => setEditedTitle(e.target.value)}
           />
         ) : (
           <h1
-            className="font-medium truncate overflow-hidden"
-            title={task.name}
+            className="font-medium text-sm truncate overflow-hidden"
+            title={subtask.name}
           >
-            {task.name}
+            {subtask.name}
           </h1>
         )}
         {isEditing ? (
           <textarea
-            className="text-sm text-gray-200 text-wrap wrap-anywhere font-light resize-none outline-none"
+            className="text-xs text-gray-200 text-wrap wrap-anywhere font-light resize-none outline-none"
             value={editedDescription}
             onChange={(e) => setEditedDescription(e.target.value)}
             placeholder="Describe tu tarea..."
             rows={3}
           />
         ) : (
-          <p className="text-sm text-gray-200 text-wrap wrap-anywhere font-light">
-            {task.description || '(Sin descripción)'}
+          <p className="text-xs text-gray-200 text-wrap wrap-anywhere font-light">
+            {subtask.description || '(Sin descripción)'}
           </p>
         )}
         <div className="flex mt-1 items-center justify-between w-full">
@@ -120,7 +136,7 @@ export default function Task({ task }: TaskProp) {
             </select>
           ) : (
             <span className="bg-blue-200 text-blue-500 w-fit leading-none rounded-md p-1 text-xs font-medium">
-              {task.category}
+              {subtask.category}
             </span>
           )}
           <div className="flex items-center gap-1">
@@ -134,7 +150,7 @@ export default function Task({ task }: TaskProp) {
               />
             ) : (
               <span className="text-xs font-medium">
-                {task.deadline || '(Sin fecha limite)'}
+                {subtask.deadline || '(Sin fecha limite)'}
               </span>
             )}
           </div>
@@ -142,14 +158,14 @@ export default function Task({ task }: TaskProp) {
       </div>
       <div className="flex justify-between h-full w-full gap-1">
         <button className="cursor-pointer" onClick={handleCheckbox}>
-          {task.isDone ? (
+          {subtask.isDone ? (
             <Icon icon="ci:checkbox-check" className="h-4" />
           ) : (
             <Icon icon="ci:checkbox-unchecked" className="h-4" />
           )}
         </button>
         <button className="cursor-pointer" onClick={handleImportant}>
-          {task.isImportant ? (
+          {subtask.isImportant ? (
             <Icon icon="pajamas:star" className="h-4" />
           ) : (
             <Icon icon="pajamas:star-o" className="h-4" />

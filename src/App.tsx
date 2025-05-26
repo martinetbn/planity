@@ -2,6 +2,7 @@ import { useAtom } from 'jotai';
 import { taskListAtom } from './atoms/taskAtoms';
 import Column from './components/Column';
 import Task from './components/Task';
+import SubTask from './components/SubTask';
 import AddTask from './components/AddTask';
 import Modal from './components/Modal';
 
@@ -16,7 +17,16 @@ export default function App() {
           <span className="text-center">No hay tareas</span>
         )}
         {taskList.map((task, index) => (
-          <Task key={index} task={task} />
+          <div className="flex flex-col gap-1 w-full" key={index}>
+            <Task task={task} />
+            {task.subTasks.length > 0 && (
+              <div className="pl-4 border-l-3 border-gray-400 flex flex-col gap-1">
+                {task.subTasks.map((subTask, subIndex) => (
+                  <SubTask key={subIndex} subtask={subTask} />
+                ))}
+              </div>
+            )}
+          </div>
         ))}
       </Column>
       <Modal />

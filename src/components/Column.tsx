@@ -2,6 +2,7 @@ import { Children } from 'react';
 import { useAtom } from 'jotai';
 import { taskListAtom } from '../atoms/taskAtoms';
 import { currentModalAtom } from '../atoms/layoutAtoms';
+import { Icon } from '@iconify/react';
 
 interface ColumnProps {
   name: string;
@@ -26,17 +27,7 @@ export default function Column({ name, children }: ColumnProps) {
           disabled={taskList.length === 0}
           onClick={() => setCurrentModal('DeleteAllConfirmation')}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="currentColor"
-              d="M7 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2h4a1 1 0 1 1 0 2h-1.069l-.867 12.142A2 2 0 0 1 17.069 22H6.93a2 2 0 0 1-1.995-1.858L4.07 8H3a1 1 0 0 1 0-2h4zm2 2h6V4H9zM6.074 8l.857 12H17.07l.857-12zM10 10a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1m4 0a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1"
-            />
-          </svg>
+          <Icon icon="tabler:trash" height={18} />
         </button>
       </div>
       <div className="w-full flex flex-col gap-2 overflow-y-scroll max-h-72">
