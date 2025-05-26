@@ -64,7 +64,7 @@ export default function AddTask() {
 
   return (
     <form
-      className="bg-gray-700 w-full flex-col max-w-84 gap-2 flex items-center justify-between p-4 rounded-lg"
+      className="bg-gray-700 flex-col min-w-72 md:w-84 gap-2 flex items-center justify-between p-4 rounded-lg"
       onSubmit={(e) => {
         e.preventDefault();
         handleAddTask();
