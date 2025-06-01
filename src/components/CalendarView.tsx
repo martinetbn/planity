@@ -52,7 +52,7 @@ export default function CalendarView() {
       {WEEKDAYS.map((day) => (
         <Column key={day} name={day} taskCount={tasksByWeekday[day].length}>
           {tasksByWeekday[day].length === 0 && (
-            <span className="text-center">No hay tareas para {day.toLowerCase()}</span>
+            <span className="text-center">No hay tareas para los {day.toLowerCase()}</span>
           )}
           {tasksByWeekday[day].map((task, index) => (
             <div className="flex flex-col gap-1 w-full" key={index}>
