@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAtom } from 'jotai';
 import { taskListAtom } from '../atoms/taskAtoms';
+import { currentModalAtom } from '../atoms/layoutAtoms';
 import { Icon } from '@iconify/react';
 import type { Task, TaskCategory } from '../types/task.types';
 
@@ -10,6 +11,7 @@ interface TaskProp {
 
 export default function Task({ task }: TaskProp) {
   const [, setTaskList] = useAtom(taskListAtom);
+  const [, setCurrentModal] = useAtom(currentModalAtom);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(task.name);
   const [editedDescription, setEditedDescription] = useState(
@@ -37,6 +39,12 @@ export default function Task({ task }: TaskProp) {
 
   const handleEdit = () => {
     if (isEditing) {
+      // Validate that the title is not empty
+      if (!editedTitle.trim()) {
+        setCurrentModal('EmptyTitleError');
+        return;
+      }
+      
       setTaskList((prev) =>
         prev.map((_task) => {
           if (_task.id === task.id) {

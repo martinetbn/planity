@@ -1,6 +1,7 @@
 import { useAtom } from 'jotai';
 import { createElement } from 'react';
 import DeleteAllConfirmationModal from './modals/DeleteAllConfirmationModal';
+import EmptyTitleErrorModal from './modals/EmptyTitleErrorModal';
 import { currentModalAtom } from '../atoms/layoutAtoms';
 
 export default function Modal() {
@@ -14,6 +15,7 @@ export default function Modal() {
 
   const modalList = {
     DeleteAllConfirmation: <DeleteAllConfirmationModal />,
+    EmptyTitleError: <EmptyTitleErrorModal />,
   };
 
   return (
