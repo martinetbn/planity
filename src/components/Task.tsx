@@ -66,6 +66,16 @@ export default function Task({ task }: TaskProp) {
     );
   };
 
+  const handleDuplicate = () => {
+    const duplicatedTask: Task = {
+      ...task,
+      id: Date.now(), // Generate new unique ID as number
+      name: task.name + ' (copia)',
+      isDone: false, // Reset completion status for the copy
+    };
+    setTaskList((prev) => [...prev, duplicatedTask]);
+  };
+
   const deadlinePassed = Date.parse(task.deadline || '') < Date.now();
 
   return (
@@ -154,6 +164,9 @@ export default function Task({ task }: TaskProp) {
           ) : (
             <Icon icon="pajamas:star-o" className="h-4" />
           )}
+        </button>
+        <button className="cursor-pointer" onClick={handleDuplicate}>
+          <Icon icon="lucide:copy" className="h-4" />
         </button>
         <button className="cursor-pointer" onClick={handleEdit}>
           {isEditing ? (
