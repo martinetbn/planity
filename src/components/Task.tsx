@@ -90,7 +90,7 @@ export default function Task({ task }: TaskProp) {
     <div
       className={
         'flex flex-col max-w-full items-start gap-2 justify-start text-gray-100 p-3 bg-gray-500 rounded-lg relative ' +
-        (deadlinePassed ? ' bg-red-500' : '')
+        (deadlinePassed && !task.isDone ? ' bg-red-500' : '')
       }
     >
       <div className="flex flex-col justify-start h-full w-full min-w-0">
