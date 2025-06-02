@@ -45,7 +45,7 @@ export default function CalendarView() {
   const tasksWithoutDeadline = tasks.filter((task) => !task.deadline);
 
   return (
-    <div className="w-full flex items-center lg:justify-start justify-start gap-4">
+    <div className="w-full flex items-start lg:justify-start justify-start gap-4">
       {WEEKDAYS.map((day) => (
         <TaskColumn 
           key={day} 
