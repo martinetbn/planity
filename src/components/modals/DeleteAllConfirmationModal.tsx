@@ -1,13 +1,13 @@
 import { useAtom } from 'jotai';
-import { taskListAtom } from '../../atoms/taskAtoms';
-import { currentModalAtom } from '../../atoms/layoutAtoms';
+import { useTasks } from '../../features/tasks/hooks/useTasks';
+import { currentModalAtom } from '../../features/layout/store/layoutAtoms';
 
 export default function DeleteAllConfirmationModal() {
-  const [, setTaskList] = useAtom(taskListAtom);
+  const { deleteAllTasks } = useTasks();
   const [, setCurrentModal] = useAtom(currentModalAtom);
 
   const handleDeleteAll = () => {
-    setTaskList([]);
+    deleteAllTasks();
     setCurrentModal(null);
   };
 

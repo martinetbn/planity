@@ -1,136 +1,168 @@
 import { useState } from 'react';
-import { useAtom } from 'jotai';
-import { taskListAtom } from '../atoms/taskAtoms';
-import { TaskCategory } from '../types/task.types';
+import { Icon } from '@iconify/react';
+import { useTasks } from '../features/tasks/hooks/useTasks';
+import { TaskCategory } from '../lib/types';
+import { Card, CardContent, CardHeader, CardTitle, Button } from '../shared/components/ui';
+import { cn } from '../lib/utils';
 
 export default function AddTask() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState<TaskCategory>('Personal');
-  const [parentTask, setParentTask] = useState<number>(0);
   const [deadline, setDeadline] = useState('');
-  const [taskList, setTaskList] = useAtom(taskListAtom);
+  const [isImportant, setIsImportant] = useState(false);
+  const { tasks, addTask, addSubtask } = useTasks();
 
   const handleAddTask = () => {
-    const lastId = localStorage.getItem('lastTaskId');
-    const newId = lastId ? parseInt(lastId, 10) + 1 : 1;
-    localStorage.setItem('lastTaskId', newId.toString());
+    addTask({
+      name: title,
+      description: description,
+      category: category,
+      deadline: deadline,
+      isDone: false,
+      isImportant: isImportant,
+    });
 
-    if (parentTask === 0) {
-      setTaskList((prev) => [
-        ...prev,
-        {
-          id: newId,
-          name: title,
-          description: description,
-          category: category,
-          deadline: deadline,
-          isDone: false,
-          isImportant: false,
-          subTasks: [],
-        },
-      ]);
-    } else {
-      setTaskList((prev) =>
-        prev.map((task) => {
-          if (task.id === parentTask) {
-            return {
-              ...task,
-              subTasks: [
-                ...task.subTasks,
-                {
-                  id: newId,
-                  name: title,
-                  description: description,
-                  category: category,
-                  deadline: deadline,
-                  isDone: false,
-                  isImportant: false,
-                },
-              ],
-            };
-          }
-          return task;
-        }),
-      );
-    }
-
+    // Reset form
     setTitle('');
     setDescription('');
     setCategory('Personal');
     setDeadline('');
-    setParentTask(0);
+    setIsImportant(false);
   };
 
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'Personal':
+        return 'border-blue-200 bg-blue-50 text-blue-700';
+      case 'Trabajo':
+        return 'border-green-200 bg-green-50 text-green-700';
+      case 'Estudio':
+        return 'border-purple-200 bg-purple-50 text-purple-700';
+      default:
+        return 'border-gray-200 bg-gray-50 text-gray-700';
+    }
+  };
+
+  const isFormValid = title.trim() && deadline.trim();
+
   return (
-    <form
-      className="bg-gray-700 flex-col min-w-72 md:w-84 gap-2 flex items-center justify-between p-4 rounded-lg"
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleAddTask();
-      }}
-    >
-      <div className="w-full flex flex-col gap-1">
-        <span className="text-white text-sm font-semibold">Título</span>
-        <input
-          className="p-2 bg-gray-500 text-gray-100 text-sm w-full rounded outline-none"
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
-      <div className="w-full flex flex-col gap-1">
-        <span className="text-white text-sm font-semibold">Descripción</span>
-        <input
-          className="p-2 bg-gray-500 text-gray-100 text-sm w-full rounded outline-none"
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </div>
-      <div className="w-full flex flex-col gap-1">
-        <span className="text-white text-sm font-semibold">Categoria</span>
-        <select
-          className="p-2 bg-gray-500 text-gray-100 text-sm w-full rounded outline-none"
-          value={category}
-          onChange={(e) => setCategory(e.target.value as TaskCategory)}
+    <Card className="w-full max-w-sm min-w-80 shadow-lg border-2 border-dashed border-gray-300 hover:border-blue-400 transition-colors">
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center gap-2 text-lg text-gray-800">
+          <Icon icon="mdi:plus-circle" className="h-5 w-5 text-blue-500" />
+          Nueva Tarea
+        </CardTitle>
+      </CardHeader>
+      
+      <CardContent className="space-y-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (isFormValid) handleAddTask();
+          }}
+          className="space-y-4"
         >
-          <option value="Personal">Personal</option>
-          <option value="Trabajo">Trabajo</option>
-          <option value="Estudio">Estudio</option>
-        </select>
-      </div>
-      <div className="w-full flex flex-col gap-1">
-        <span className="text-white text-sm font-semibold">Fecha Limite</span>
-        <input
-          className="p-2 bg-gray-500 text-gray-100 text-sm w-full rounded outline-none"
-          type="date"
-          value={deadline}
-          onChange={(e) => setDeadline(e.target.value)}
-        />
-      </div>
-      <div className="w-full flex flex-col gap-1">
-        <span className="text-white text-sm font-semibold">Tarea Padre</span>
-        <select
-          className="p-2 bg-gray-500 text-gray-100 text-sm w-full rounded outline-none"
-          value={parentTask ?? 0}
-          onChange={(e) => setParentTask(parseInt(e.target.value))}
-        >
-          <option value={0}>Ninguna</option>
-          {taskList.map((task) => (
-            <option key={task.id} value={task.id}>
-              {task.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <button
-        className="p-2 w-full bg-blue-500 text-white text-sm cursor-pointer active:scale-97 disabled:opacity-50 transition-all duration-100 rounded"
-        disabled={!title.trim() || !deadline.trim()}
-        type="submit"
-      >
-        Agregar
-      </button>
-    </form>
+          {/* Title Input */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+              <Icon icon="mdi:text" className="h-4 w-4" />
+              Título *
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="¿Qué necesitas hacer?"
+              required
+            />
+          </div>
+
+          {/* Description Input */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+              <Icon icon="mdi:text-long" className="h-4 w-4" />
+              Descripción
+            </label>
+            <textarea
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-none"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Describe los detalles..."
+              rows={3}
+            />
+          </div>
+
+          {/* Category Selection */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+              <Icon icon="mdi:tag" className="h-4 w-4" />
+              Categoría
+            </label>
+            <select
+              className={cn(
+                "w-full px-3 py-2 border rounded-md text-sm font-medium outline-none transition-colors",
+                getCategoryColor(category)
+              )}
+              value={category}
+              onChange={(e) => setCategory(e.target.value as TaskCategory)}
+            >
+              <option value="Personal">📘 Personal</option>
+              <option value="Trabajo">💼 Trabajo</option>
+              <option value="Estudio">📚 Estudio</option>
+            </select>
+          </div>
+
+          {/* Deadline Input */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+              <Icon icon="mdi:calendar" className="h-4 w-4" />
+              Fecha Límite *
+            </label>
+            <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+              type="date"
+              value={deadline}
+              onChange={(e) => setDeadline(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Important Toggle */}
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="important"
+              checked={isImportant}
+              onChange={(e) => setIsImportant(e.target.checked)}
+              className="w-4 h-4 text-yellow-500 bg-gray-100 border-gray-300 rounded focus:ring-yellow-500 focus:ring-2"
+            />
+            <label htmlFor="important" className="text-sm font-medium text-gray-700 flex items-center gap-1">
+              <Icon icon="mdi:star" className="h-4 w-4 text-yellow-500" />
+              Marcar como importante
+            </label>
+          </div>
+
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            disabled={!isFormValid}
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            <Icon icon="mdi:plus" className="h-4 w-4" />
+            Crear Tarea
+          </Button>
+
+          {/* Form Validation Message */}
+          {!isFormValid && (title || deadline) && (
+            <p className="text-xs text-red-500 flex items-center gap-1">
+              <Icon icon="mdi:alert-circle" className="h-3 w-3" />
+              Título y fecha límite son obligatorios
+            </p>
+          )}
+        </form>
+      </CardContent>
+    </Card>
   );
 }
