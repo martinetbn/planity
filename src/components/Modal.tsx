@@ -2,7 +2,7 @@ import { useAtom } from 'jotai';
 import { createElement } from 'react';
 import DeleteAllConfirmationModal from './modals/DeleteAllConfirmationModal';
 import EmptyTitleErrorModal from './modals/EmptyTitleErrorModal';
-import { currentModalAtom } from '../atoms/layoutAtoms';
+import { currentModalAtom } from '../features/layout/store/layoutAtoms';
 
 export default function Modal() {
   const [currentModal, setCurrentModal] = useAtom<string | null>(
