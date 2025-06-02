@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai';
-import { currentModalAtom } from '../../atoms/layoutAtoms';
+import { currentModalAtom } from '../../features/layout/store/layoutAtoms';
 
 export default function EmptyTitleErrorModal() {
   const [, setCurrentModal] = useAtom(currentModalAtom);

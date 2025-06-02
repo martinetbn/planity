@@ -1,9 +1,6 @@
-import { useAtom } from 'jotai';
-import { taskListAtom } from '../atoms/taskAtoms';
-import Column from './Column';
-import Task from './Task';
-import SubTask from './SubTask';
-import type { Task as TaskType } from '../types/task.types';
+import { useTasks } from '../features/tasks/hooks/useTasks';
+import { TaskColumn, TaskCard } from '../features/tasks/components';
+import type { Task as TaskType } from '../lib/types';
 
 const WEEKDAYS = [
   'Lunes',
@@ -16,11 +13,11 @@ const WEEKDAYS = [
 ];
 
 export default function CalendarView() {
-  const [taskList] = useAtom(taskListAtom);
+  const { tasks } = useTasks();
 
   // Group tasks by weekday based on deadline
   const tasksByWeekday = WEEKDAYS.reduce((acc, day, index) => {
-    acc[day] = taskList.filter((task) => {
+    acc[day] = tasks.filter((task) => {
       if (!task.deadline) return false;
       
       // Parse date properly to avoid timezone issues
@@ -45,45 +42,37 @@ export default function CalendarView() {
   }, {} as Record<string, TaskType[]>);
 
   // Tasks without deadline go to a separate section
-  const tasksWithoutDeadline = taskList.filter((task) => !task.deadline);
+  const tasksWithoutDeadline = tasks.filter((task) => !task.deadline);
 
   return (
     <div className="w-full flex items-center lg:justify-start justify-start gap-4">
       {WEEKDAYS.map((day) => (
-        <Column key={day} name={day} taskCount={tasksByWeekday[day].length}>
-          {tasksByWeekday[day].length === 0 && (
-            <span className="text-center">No hay tareas para los {day.toLowerCase()}</span>
+        <TaskColumn 
+          key={day} 
+          title={day} 
+          taskCount={tasksByWeekday[day].length}
+          icon="mdi:calendar-outline"
+        >
+          {tasksByWeekday[day].length === 0 ? (
+            <span className="text-center text-gray-500">No hay tareas para {day.toLowerCase()}</span>
+          ) : (
+            tasksByWeekday[day].map((task) => (
+              <TaskCard key={task.id} task={task} />
+            ))
           )}
-          {tasksByWeekday[day].map((task, index) => (
-            <div className="flex flex-col gap-1 w-full" key={index}>
-              <Task task={task} />
-              {task.subTasks.length > 0 && (
-                <div className="pl-4 border-l-3 border-gray-400 flex flex-col gap-1">
-                  {task.subTasks.map((subTask, subIndex) => (
-                    <SubTask key={subIndex} subtask={subTask} />
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </Column>
+        </TaskColumn>
       ))}
       
       {tasksWithoutDeadline.length > 0 && (
-        <Column name="Sin fecha" taskCount={tasksWithoutDeadline.length}>
-          {tasksWithoutDeadline.map((task, index) => (
-            <div className="flex flex-col gap-1 w-full" key={index}>
-              <Task task={task} />
-              {task.subTasks.length > 0 && (
-                <div className="pl-4 border-l-3 border-gray-400 flex flex-col gap-1">
-                  {task.subTasks.map((subTask, subIndex) => (
-                    <SubTask key={subIndex} subtask={subTask} />
-                  ))}
-                </div>
-              )}
-            </div>
+        <TaskColumn 
+          title="Sin fecha" 
+          taskCount={tasksWithoutDeadline.length}
+          icon="mdi:calendar-remove"
+        >
+          {tasksWithoutDeadline.map((task) => (
+            <TaskCard key={task.id} task={task} />
           ))}
-        </Column>
+        </TaskColumn>
       )}
     </div>
   );
