@@ -47,7 +47,7 @@ export default function AddTask() {
   const isFormValid = title.trim() && deadline.trim();
 
   return (
-    <Card className="w-full max-w-sm min-w-80 shadow-lg border-2 border-dashed border-gray-300 hover:border-blue-400 transition-colors">
+    <Card className="w-full lg:max-w-sm min-w-80 shadow-lg border-2 border-dashed border-gray-300 hover:border-blue-400 transition-colors">
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-2 text-lg text-gray-800">
           <Icon icon="mdi:plus-circle" className="h-5 w-5 text-blue-500" />

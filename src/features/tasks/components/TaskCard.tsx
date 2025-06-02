@@ -237,12 +237,12 @@ export function TaskCard({ task, className }: TaskCardProps) {
                 variant="ghost"
                 size="icon"
                 onClick={handleToggleComplete}
-                className="h-8 w-8 p-0"
+                className="h-8 w-8 p-0 group"
               >
                 {task.isDone ? (
                   <Icon icon="mdi:checkbox-marked" className="h-4 w-4 text-green-600" />
                 ) : (
-                  <Icon icon="mdi:checkbox-blank-outline" className="h-4 w-4 text-gray-400" />
+                  <Icon icon="mdi:checkbox-blank-outline" className="h-4 w-4 text-gray-400 group-hover:text-green-500 transition-colors" />
                 )}
               </Button>
 
@@ -251,12 +251,12 @@ export function TaskCard({ task, className }: TaskCardProps) {
                 variant="ghost"
                 size="icon"
                 onClick={handleToggleImportant}
-                className="h-8 w-8 p-0"
+                className="h-8 w-8 p-0 group"
               >
                 {task.isImportant ? (
                   <Icon icon="mdi:star" className="h-4 w-4 text-yellow-500" />
                 ) : (
-                  <Icon icon="mdi:star-outline" className="h-4 w-4 text-gray-400" />
+                  <Icon icon="mdi:star-outline" className="h-4 w-4 text-gray-400 group-hover:text-yellow-500 transition-colors" />
                 )}
               </Button>
 
@@ -265,10 +265,10 @@ export function TaskCard({ task, className }: TaskCardProps) {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsAddingSubtask(true)}
-                className="h-8 w-8 p-0"
+                className="h-8 w-8 p-0 group"
                 title="Agregar subtarea"
               >
-                <Icon icon="mdi:plus" className="h-4 w-4 text-gray-400 hover:text-blue-500" />
+                <Icon icon="mdi:plus" className="h-4 w-4 text-gray-400 group-hover:text-blue-500 transition-colors" />
               </Button>
 
               {/* Duplicate */}
@@ -276,9 +276,9 @@ export function TaskCard({ task, className }: TaskCardProps) {
                 variant="ghost"
                 size="icon"
                 onClick={handleDuplicate}
-                className="h-8 w-8 p-0"
+                className="h-8 w-8 p-0 group"
               >
-                <Icon icon="mdi:content-copy" className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                <Icon icon="mdi:content-copy" className="h-4 w-4 text-gray-400 group-hover:text-gray-600 transition-colors" />
               </Button>
 
               {/* Edit/Save */}
@@ -286,12 +286,12 @@ export function TaskCard({ task, className }: TaskCardProps) {
                 variant="ghost"
                 size="icon"
                 onClick={handleEdit}
-                className="h-8 w-8 p-0"
+                className="h-8 w-8 p-0 group"
               >
                 {isEditing ? (
                   <Icon icon="mdi:content-save" className="h-4 w-4 text-blue-500" />
                 ) : (
-                  <Icon icon="mdi:pencil" className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                  <Icon icon="mdi:pencil" className="h-4 w-4 text-gray-400 group-hover:text-gray-600 transition-colors" />
                 )}
               </Button>
 
@@ -300,9 +300,9 @@ export function TaskCard({ task, className }: TaskCardProps) {
                 variant="ghost"
                 size="icon"
                 onClick={handleDelete}
-                className="h-8 w-8 p-0"
+                className="h-8 w-8 p-0 group"
               >
-                <Icon icon="mdi:delete" className="h-4 w-4 text-gray-400 hover:text-red-500" />
+                <Icon icon="mdi:delete" className="h-4 w-4 text-gray-400 group-hover:text-red-500 transition-colors" />
               </Button>
             </div>
           </div>
