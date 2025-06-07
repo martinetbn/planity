@@ -21,7 +21,14 @@ export function TaskCard({ task, className }: TaskCardProps) {
   const [editedTitle, setEditedTitle] = useState(task.name);
   const [editedDescription, setEditedDescription] = useState(task.description || '');
   const [editedCategory, setEditedCategory] = useState<TaskCategory>(task.category);
-  const [editedDeadline, setEditedDeadline] = useState(task.deadline || '');
+  const [editedDeadline, setEditedDeadline] = useState(() => {
+    // Convert date to proper format for date input (avoid timezone issues)
+    if (task.deadline) {
+      const date = new Date(task.deadline + 'T12:00:00'); // Add noon time to avoid timezone shifts
+      return date.toISOString().split('T')[0]; // Extract YYYY-MM-DD format
+    }
+    return '';
+  });
   
   // Subtask form state
   const [subtaskTitle, setSubtaskTitle] = useState('');

@@ -104,10 +104,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen flex flex-col justify-between items-center bg-gray-50">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <header className="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm w-full">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
@@ -144,13 +144,13 @@ export default function App() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="w-full px-4 sm:px-6 lg:px-8 py-6">
         <div className="space-y-6">{renderCurrentView()}</div>
       </main>
 
       {/* Footer with Progress */}
-      <footer className="sticky bottom-0 bg-white border-t border-gray-200 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+      <footer className="sticky bottom-0 bg-white border-t border-gray-200 shadow-lg w-full">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-3">
           <Progress />
         </div>
       </footer>

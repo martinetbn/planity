@@ -17,7 +17,14 @@ export function SubtaskCard({ subtask, taskId, className }: SubtaskCardProps) {
   const [editedTitle, setEditedTitle] = useState(subtask.name);
   const [editedDescription, setEditedDescription] = useState(subtask.description || '');
   const [editedCategory, setEditedCategory] = useState<TaskCategory>(subtask.category);
-  const [editedDeadline, setEditedDeadline] = useState(subtask.deadline || '');
+  const [editedDeadline, setEditedDeadline] = useState(() => {
+    // Convert date to proper format for date input (avoid timezone issues)
+    if (subtask.deadline) {
+      const date = new Date(subtask.deadline + 'T12:00:00'); // Add noon time to avoid timezone shifts
+      return date.toISOString().split('T')[0]; // Extract YYYY-MM-DD format
+    }
+    return '';
+  });
 
   const handleToggleComplete = () => {
     toggleSubtaskComplete(taskId, subtask.id);

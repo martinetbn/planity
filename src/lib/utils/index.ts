@@ -6,7 +6,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatDate(date: string): string {
-  return new Date(date).toLocaleDateString('es-ES', {
+  // Add noon time to avoid timezone shifts when dealing with date-only strings
+  const dateWithTime = date.includes('T') ? date : date + 'T12:00:00';
+  return new Date(dateWithTime).toLocaleDateString('es-ES', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -14,7 +16,12 @@ export function formatDate(date: string): string {
 }
 
 export function isOverdue(deadline: string): boolean {
-  return new Date(deadline) < new Date();
+  // Add noon time to avoid timezone shifts and compare dates properly
+  const deadlineWithTime = deadline.includes('T') ? deadline : deadline + 'T12:00:00';
+  const deadlineDate = new Date(deadlineWithTime);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Reset time to start of day for fair comparison
+  return deadlineDate < today;
 }
 
 export function generateId(): number {
