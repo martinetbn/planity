@@ -100,7 +100,7 @@ export default function AwardsView() {
               <Icon icon="mdi:check-all" className="h-5 w-5 text-white" />
             </div>
             <div>
-              <p className="text-sm text-blue-600 font-medium">Completadas</p>
+              <p className="text-sm text-blue-600 font-medium">Tareas Completadas</p>
               <p className="text-2xl font-bold text-blue-900">{achievements.totalCompleted}</p>
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function AwardsView() {
               <Icon icon="mdi:percent" className="h-5 w-5 text-white" />
             </div>
             <div>
-              <p className="text-sm text-orange-600 font-medium">Progreso</p>
+              <p className="text-sm text-orange-600 font-medium">Progreso Tareas</p>
               <p className="text-2xl font-bold text-orange-900">{stats.completionRate}%</p>
             </div>
           </div>
