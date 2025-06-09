@@ -118,4 +118,26 @@ export const awardsAtom = atomWithStorage<Award[]>(STORAGE_KEYS.AWARDS, [
       category: 'Estudio',
     },
   },
+  {
+    id: 13,
+    name: 'Empezando',
+    description: 'Primera tarea creada',
+    icon: 'mdi:book-open-page-variant',
+    unlockedAt: null,
+    criteria: {
+      type: 'tasksCreated',
+      target: 1,
+    },
+  },
+  {
+    id: 14,
+    name: '5 tareas',
+    description: '5 tareas creadas',
+    icon: 'mdi:book-open-page-variant',
+    unlockedAt: null,
+    criteria: {
+      type: 'tasksCreated',
+      target: 5,
+    },
+  },
 ]); 

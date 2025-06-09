@@ -45,6 +45,9 @@ export function useAwards() {
           case 'tasksCompleted':
             shouldUnlock = achievements.totalCompleted >= award.criteria.target;
             break;
+          case 'tasksCreated':
+            shouldUnlock = tasks.length >= award.criteria.target;
+            break;
           case 'categoryMastery':
             if (award.criteria.category) {
               const categoryCount = achievements.categoryStats[award.criteria.category] || 0;
@@ -73,6 +76,9 @@ export function useAwards() {
     switch (award.criteria.type) {
       case 'tasksCompleted':
         current = achievements.totalCompleted;
+        break;
+      case 'tasksCreated':
+        current = tasks.length;
         break;
       case 'categoryMastery':
         if (award.criteria.category) {

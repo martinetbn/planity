@@ -32,7 +32,7 @@ export interface Award {
   icon: string;
   unlockedAt: string | null;
   criteria: {
-    type: 'tasksCompleted' | 'categoryMastery';
+    type: 'tasksCompleted' | 'categoryMastery' | 'tasksCreated';
     target: number;
     category?: TaskCategory;
   };
