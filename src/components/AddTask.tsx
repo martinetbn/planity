@@ -2,7 +2,13 @@ import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useTasks } from '../features/tasks/hooks/useTasks';
 import { TaskCategory } from '../lib/types';
-import { Card, CardContent, CardHeader, CardTitle, Button } from '../shared/components/ui';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Button,
+} from '../shared/components/ui';
 import { cn } from '../lib/utils';
 
 export default function AddTask() {
@@ -11,7 +17,7 @@ export default function AddTask() {
   const [category, setCategory] = useState<TaskCategory>('Personal');
   const [deadline, setDeadline] = useState('');
   const [isImportant, setIsImportant] = useState(false);
-  const { tasks, addTask, addSubtask } = useTasks();
+  const { addTask } = useTasks();
 
   const handleAddTask = () => {
     addTask({
@@ -47,14 +53,14 @@ export default function AddTask() {
   const isFormValid = title.trim() && deadline.trim();
 
   return (
-    <Card className="w-full lg:max-w-sm min-w-80 shadow-lg border-2 border-dashed border-gray-300 hover:border-blue-400 transition-colors">
+    <Card className="w-full lg:max-w-sm min-w-80 shadow-lg h-fit border-2 border-dashed border-gray-300 hover:border-blue-400 transition-colors">
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-2 text-lg text-gray-800">
           <Icon icon="mdi:plus-circle" className="h-5 w-5 text-blue-500" />
           Nueva Tarea
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent className="space-y-4">
         <form
           onSubmit={(e) => {
@@ -102,8 +108,8 @@ export default function AddTask() {
             </label>
             <select
               className={cn(
-                "w-full px-3 py-2 border rounded-md text-sm font-medium outline-none transition-colors",
-                getCategoryColor(category)
+                'w-full px-3 py-2 border rounded-md text-sm font-medium outline-none transition-colors',
+                getCategoryColor(category),
               )}
               value={category}
               onChange={(e) => setCategory(e.target.value as TaskCategory)}
@@ -138,7 +144,10 @@ export default function AddTask() {
               onChange={(e) => setIsImportant(e.target.checked)}
               className="w-4 h-4 text-yellow-500 bg-gray-100 border-gray-300 rounded focus:ring-yellow-500 focus:ring-2"
             />
-            <label htmlFor="important" className="text-sm font-medium text-gray-700 flex items-center gap-1">
+            <label
+              htmlFor="important"
+              className="text-sm font-medium text-gray-700 flex items-center gap-1"
+            >
               <Icon icon="mdi:star" className="h-4 w-4 text-yellow-500" />
               Marcar como importante
             </label>
